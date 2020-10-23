@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Oct 21, 2020 at 07:39 AM
+-- Generation Time: Oct 23, 2020 at 04:01 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.12
 
@@ -35,11 +35,11 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `phone` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `image_url` varchar(150) NOT NULL,
   `access` tinyint(1) NOT NULL,
   PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `customer`
@@ -47,7 +47,10 @@ CREATE TABLE IF NOT EXISTS `customer` (
 
 INSERT INTO `customer` (`customer_id`, `full_name`, `email`, `phone`, `username`, `password`, `image_url`, `access`) VALUES
 (1, 'Anthony Anthoine', 'anthonyanthoine@gmail.com', '71000000', 'anthony', '123', '{\"path\":\"d4.jpg\"}', 1),
-(2, 'noooo', 'no', 'no', 'no', '123', '{\"path\":\"d5.jpg\"}', 1);
+(2, 'noooo', 'no', 'no', 'no', '$2y$10$H1/5Nv2oeS7/tioQAd5sJettnsN/B7w2porsO3mxIum2l3UuGlU4e', '{\"path\":\"d5.jpg\"}', 1),
+(3, 'test', 'fouk@gmail.com', 'asdas', 'sadasd', '$2y$10$Y6A4o1TNv1fqnm2kk6powO9TMfC1J2sZQJG/lRR/K585EQdrNV.Te', '', 1),
+(4, 'zcx', 'cxz', 'zxc', 'ankdvndfn', '$2y$10$5s23Mazx1q1ARPDZy.IrWu59vhLSQEPgNBZBkhZ1wePzpzwt/7g/q', '', 1),
+(5, 'zcx', 'cxz', 'zxc', 'ankdvndfnsdadasd', '$2y$10$H1/5Nv2oeS7/tioQAd5sJettnsN/B7w2porsO3mxIum2l3UuGlU4e', '', 1);
 
 -- --------------------------------------------------------
 
@@ -62,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `customer_order` (
   `date_ordered` date NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `customer` (`customer`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `customer_order`
@@ -73,7 +76,9 @@ INSERT INTO `customer_order` (`order_id`, `customer`, `date_ordered`) VALUES
 (3, 2, '2020-10-16'),
 (4, 2, '2020-10-16'),
 (5, 2, '2020-10-16'),
-(6, 1, '2020-10-17');
+(6, 1, '2020-10-17'),
+(7, 2, '2020-10-23'),
+(8, 2, '2020-10-23');
 
 -- --------------------------------------------------------
 
@@ -100,10 +105,10 @@ CREATE TABLE IF NOT EXISTS `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_name`, `cost_price`, `price`, `description`, `barcode`, `quantity`, `image_url`, `flag_service`) VALUES
-(1, 'Uni-ball Signo Pen', 4000, 5000, 'Uni-ball Signo RT1 0.38 mm Blue Black Gel', 'A-0010-Z', 500, '{\"path\":\"Uni-ball Signo RT1 0.38 mm Blue Black Gel.jpg\"}', 0),
+(1, 'Uni-ball Signo Pen', 4000, 5000, 'Uni-ball Signo RT1 0.38 mm Blue Black Gel', 'A-0010-Z', 495, '{\"path\":\"Uni-ball Signo RT1 0.38 mm Blue Black Gel.jpg\"}', 0),
 (2, 'Zebra Sarasa Pen', 3000, 4000, 'Zebra Sarasa Clip 0.4mm', 'A-0020-Z', 300, '{\"path\":\"Zebra Sarasa Clip 0.4mm.jpg\"}', 0),
-(3, 'Pilot Hi-Tec-C Pen', 3500, 4500, 'Pilot Hi-Tec-C 0.3mm Grip Black', 'A-0030-Z', 400, '{\"path\":\"Pilot Hi-Tec-C 0.3mm Grip Black.jpg\"}', 0),
-(4, 'A4 papers', 10000, 15000, 'Double A4 papers 500 sheets', 'A-0040-Z', 100, '{\"path\":\"A4 paper.jpg\"}', 0),
+(3, 'Pilot Hi-Tec-C Pen', 3500, 4500, 'Pilot Hi-Tec-C 0.3mm Grip Black', 'A-0030-Z', 340, '{\"path\":\"Pilot Hi-Tec-C 0.3mm Grip Black.jpg\"}', 0),
+(4, 'A4 papers', 10000, 15000, 'Double A4 papers 500 sheets', 'A-0040-Z', 90, '{\"path\":\"A4 paper.jpg\"}', 0),
 (5, 'Print 1 paper', 100, 500, 'Print any NON COLORED 1 paper', 'A-0050-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1),
 (6, 'Print 5 papers', 500, 2000, 'Print any NON COLORED 5 papers', 'A-0060-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1),
 (7, 'Print 10 papers', 1000, 5000, 'Print any NON COLORED 10 papers', 'A-0070-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1);
@@ -131,7 +136,19 @@ CREATE TABLE IF NOT EXISTS `product_order` (
 INSERT INTO `product_order` (`product_id`, `order_id`, `quantity`, `price`) VALUES
 (1, 5, 2, 10000),
 (1, 6, 66, 330000),
-(3, 5, 7, 31500);
+(1, 7, 5, 25000),
+(3, 5, 7, 31500),
+(3, 8, 60, 270000),
+(4, 8, 10, 150000);
+
+--
+-- Triggers `product_order`
+--
+DROP TRIGGER IF EXISTS `decreaseQuantity`;
+DELIMITER $$
+CREATE TRIGGER `decreaseQuantity` BEFORE INSERT ON `product_order` FOR EACH ROW UPDATE product p SET p.quantity = p.quantity - NEW.quantity WHERE p.product_id = NEW.product_id
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
