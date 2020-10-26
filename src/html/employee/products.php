@@ -10,11 +10,12 @@
       header('Location: ../error.html');
     }
 
-    $sql = "SELECT full_name FROM user WHERE user_id=".$_SESSION['id']."";
+    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $user_info[] = $record;
     }
+    $image_path=json_decode($user_info[0]['image_url'], true);
 
 //     (SELECT p.product_id,p.image_url, p.product_name, p.quantity, SUM(po.quantity) as quantity_sold, p.price FROM product p, product_order po WHERE p.product_id=po.product_id GROUP BY p.product_id) UNION (SELECT product_id, image_url, product_name, quantity,NULL, price FROM product WHERE product_id NOT IN (SELECT p.product_id FROM product p, product_order po WHERE p.product_id=po.product_id GROUP BY product_id))
 // ORDER BY `product_id` ASC
@@ -144,8 +145,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -224,7 +225,22 @@
                 <div class="row">
                     <div class="col-7 align-self-center">
                         <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Product Listing</h4>
-                    </div>        
+                    </div>
+                </div>
+                <div class="row mt-4">
+                  <button type="button" class="btn btn-primary btn-circle-lg" onclick="goto_addProduct()"><i class="fa fa-plus"></i>
+                              </button>
+                    <div class="col-7 align-self-center">
+
+                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Product</h4>
+                        <!-- <div class="d-flex align-items-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0 p-0">
+                                    <li class="breadcrumb-item"><a href="payment.php" class="text-muted">Goto Payment to proceed to Checkout</a></li>
+                                </ol>
+                            </nav>
+                        </div> -->
+                    </div>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -251,11 +267,13 @@
                                                 <th>Quantity in Sale</th>
                                                 <th>Quantity Sold</th>
                                                 <th>Price</th>
+                                                <th>Manage</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                                 for($i=0;$i<count($products);$i++){
+                                                    $product_id=$products[$i]['product_id'];
                                                     $image_path=json_decode($products[$i]['image_url'],true);
                                                     $product_name=$products[$i]['product_name'];
                                                     $quantity=$products[$i]['quantity'];
@@ -270,6 +288,7 @@
                                                     echo"<td>".$quantity."</td>";
                                                     echo"<td>".$quantity_sold."</td>";
                                                     echo"<td>".$price."</td>";
+                                                    echo"<td> <a href='./edit_product.php?productId=".$product_id."'>Edit</a> | <a href='../../database/delete_product.php?productId=".$product_id."'>Delete</a>  </td>";
                                                     echo "</tr>";
                                                 }
                                             ?>
@@ -281,6 +300,7 @@
                                                 <th>Quantity in Sale</th>
                                                 <th>Quantity Sold</th>
                                                 <th>Price</th>
+                                                <th>Manage</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -338,6 +358,11 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script>
+      function goto_addProduct(){
+        window.location.href = './add_product.php';
+      }
+    </script>
 </body>
 
 </html>

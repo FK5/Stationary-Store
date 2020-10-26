@@ -15,6 +15,7 @@
     while($record = mysqli_fetch_assoc($query_result)) {
       $users_info[] = $record;
     }
+    $image_path=json_decode($user_info[0]['image_url'], true);
 ///////TO EDIT  Customer
     $customer_id=$_GET['userId'];
 
@@ -145,8 +146,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $users_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>

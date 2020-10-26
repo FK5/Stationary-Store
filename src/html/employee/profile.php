@@ -19,11 +19,29 @@
     while($record = mysqli_fetch_assoc($query_result)) {
       $user_info[] = $record;
     }
+    $image_path=json_decode($user_info[0]['image_url'], true);
 
     $fullname=$user_info[0]['full_name'];
     $email=$user_info[0]['email'];
     $phone=$user_info[0]['phone'];
     $username=$user_info[0]['username'];
+
+    //UPLOADING IMAGE
+    if(!empty($_FILES["newImage"])){
+      // print_r($_FILES["newImage"]);
+      $target_dir = "../../assets/images/users/";
+      $new_file_name = $username.time().".jpg";
+      $target_file= $target_dir.$new_file_name;
+      move_uploaded_file($_FILES["newImage"]["tmp_name"],$target_file);
+      // print_r($target_file);
+      $sql = "UPDATE user SET image_url='{\"path\":\"".$new_file_name."\"}' WHERE user_id=".$_SESSION['id']."";
+      if (mysqli_query($conn, $sql)) {
+        // echo "Record updated successfully";
+        header("Refresh:0");
+      } else {
+        // echo "Error updating record: " . mysqli_error($conn);
+      }
+    }
 
 ?>
 <!DOCTYPE html>
@@ -141,8 +159,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -246,6 +264,20 @@
                 <!-- basic table -->
                 <div class="row">
                     <div class="col-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4>Profile Image</h4>
+                            <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle mt-3 mb-4'
+                                width='250' height='250'>"; ?>
+                            <form action="./profile.php" method="post" enctype="multipart/form-data">
+                              <input type="file" name="newImage">
+                              <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                              </div>
+                            </form>
+                          </div>
+                      </div>
+                      <hr />
                         <div class="card">
                             <div class="card-body">
                                 <form id="myForm" action="../../database/edit_user.php" method="post">

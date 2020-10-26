@@ -10,11 +10,12 @@
       header('Location: ../error.html');
     }
 
-    $sql = "SELECT full_name FROM user WHERE user_id=".$_SESSION['id']."";
+    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $user_info[] = $record;
     }
+    $image_path=json_decode($user_info[0]['image_url'], true);
 
     $sql = "SELECT * FROM customer";
     $query_result = mysqli_query($conn, $sql);
@@ -137,8 +138,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -256,12 +257,17 @@
                                                   $full_name=$customer[$i]['full_name'];
                                                   $email=$customer[$i]['email'];
                                                   $position="customer";
+                                                  if($customer[$i]['access']==0){
+                                                      $access="Access Denied";
+                                                  }else{
+                                                      $access="Access Permitted";
+                                                  }
                                                   echo "<tr>";
                                                   echo"<td> <img src='../../assets/images/users/".$image_path['path']."' width='75' height='75'></td>";
                                                   echo"<td>".$full_name."</td>";
                                                   echo"<td>".$email."</td>";
                                                   echo"<td>".$position."</td>";
-                                                  echo"<td> <a href='../../database/customer_give_access.php?userId=".$user_id."'>Give</a> | <a href='../../database/customer_remove_access.php?userId=".$user_id."'>Deny</a> </td>";
+                                                  echo"<td>".$access."<br /> <a href='../../database/customer_give_access.php?userId=".$user_id."'>Give</a> | <a href='../../database/customer_remove_access.php?userId=".$user_id."'>Deny</a> </td>";
                                                   echo"<td> <a href='./edit_customer.php?userId=".$user_id."'>Edit</a> | <a href='../../database/delete_customer.php?userId=".$user_id."'>Delete</a>  </td>";
                                                   echo "</tr>";
                                               }

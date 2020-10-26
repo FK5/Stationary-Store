@@ -6,11 +6,12 @@
       header('Location: ../error.html');
     }
 
-    $sql = "SELECT full_name FROM user WHERE user_id=".$_SESSION['id']."";
+    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $user_info[] = $record;
     }
+    $image_path=json_decode($user_info[0]['image_url'], true);
 
     $sql = "( SELECT p.product_id, p.image_url, SUM(po.quantity) AS quantity_sold, p.cost_price, p.price FROM product p,
      product_order po WHERE p.product_id = po.product_id GROUP BY p.product_id ) UNION ( SELECT product_id, image_url,
@@ -136,8 +137,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
