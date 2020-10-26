@@ -6,6 +6,10 @@
       header('Location: ../authentication-login1.php');
     }
 
+    if(isset($_SESSION['role'])){
+      header('Location: ../error.html');
+    }
+
     $sql = "SELECT full_name FROM customer WHERE customer_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
@@ -263,7 +267,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             <?php
                                                 for($i=0;$i<count($products);$i++){
                                                     $product_id=$products[$i]['product_id'];

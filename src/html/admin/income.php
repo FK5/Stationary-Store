@@ -2,7 +2,7 @@
     session_start();
     require_once('../../database/db.php');
 
-    if($_SESSION['role']!=1){
+    if($_SESSION['role']!=1 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
 

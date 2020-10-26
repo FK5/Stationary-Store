@@ -6,7 +6,7 @@
       header('Location: ../authentication-login1.php');
     }
 
-    if($_SESSION['role']!=3){
+    if($_SESSION['role']!=3 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
 ///////managers acc info
@@ -24,6 +24,7 @@
     while($record = mysqli_fetch_assoc($query_result)) {
       $product_info[] = $record;
     }
+    $p_image_path = json_decode($product_info[0]['image_url'],true);
 
     $product_name=$product_info[0]['product_name'];
     $cost_price=$product_info[0]['cost_price'];
@@ -31,7 +32,6 @@
     $description=$product_info[0]['description'];
     $barcode=$product_info[0]['barcode'];
     $quantity=$product_info[0]['quantity'];
-
 
 ?>
 <!DOCTYPE html>
@@ -326,6 +326,21 @@
                                 </form>
 
                             </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="card">
+                        <div class="card-body">
+                          <h4>Product Image</h4>
+                          <?php echo"<img src='../../assets/images/products/".$p_image_path['path']."' alt='product' class=' mt-3 mb-4'
+                              width='250' height='250'>"; ?>
+                          <form action='../../database/edit_product_image.php' method='post' enctype='multipart/form-data'>
+                            <input type="file" name="newImage">
+                            <?php echo "<input type='hidden' name='productId' value='".$product_id."'>"; ?>
+                            <div class="mt-3">
+                              <button type="submit" class="btn btn-primary">Upload</button>
+                            </div>
+                          </form>
                         </div>
                     </div>
                 </div>

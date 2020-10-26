@@ -6,7 +6,7 @@
       header('Location: ../authentication-login1.php');
     }
 
-    if($_SESSION['role']!=2){
+    if($_SESSION['role']!=2 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
 

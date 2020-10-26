@@ -5,6 +5,9 @@
     if(!isset($_SESSION['id'])){
       header('Location: ../authentication-login1.php');
     }
+    if(isset($_SESSION['role'])){
+      header('Location: ../error.html');
+    }
 
     $sql = "SELECT full_name FROM customer WHERE customer_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);

@@ -5,24 +5,45 @@
     if(!isset($_SESSION['id'])){
       header('Location: ../authentication-login1.php');
     }
+    if(isset($_SESSION['role'])){
+      header('Location: ../error.html');
+    }
 
     $sql = "SELECT * FROM customer WHERE customer_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $customer_info[] = $record;
     }
+    $image_path=json_decode($customer_info[0]['image_url'], true);
 
     $fullname=$customer_info[0]['full_name'];
     $email=$customer_info[0]['email'];
     $phone=$customer_info[0]['phone'];
     $username=$customer_info[0]['username'];
 
-    $sql = "SELECT c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
-    FROM customer c, customer_order o, product_order po, product p WHERE c.customer_id=o.customer
-    AND o.order_id=po.order_id AND po.product_id=p.product_id";
-    $query_result = mysqli_query($conn, $sql);
-    while($record = mysqli_fetch_assoc($query_result)) {
-      $orders[] = $record;
+    // $sql = "SELECT c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
+    // FROM customer c, customer_order o, product_order po, product p WHERE c.customer_id=o.customer
+    // AND o.order_id=po.order_id AND po.product_id=p.product_id";
+    // $query_result = mysqli_query($conn, $sql);
+    // while($record = mysqli_fetch_assoc($query_result)) {
+    //   $orders[] = $record;
+    // }
+
+    //UPLOADING IMAGE
+    if(!empty($_FILES["newImage"])){
+      // print_r($_FILES["newImage"]);
+      $target_dir = "../../assets/images/users/";
+      $new_file_name = $username.time().".jpg";
+      $target_file= $target_dir.$new_file_name;
+      move_uploaded_file($_FILES["newImage"]["tmp_name"],$target_file);
+      // print_r($target_file);
+      $sql = "UPDATE customer SET image_url='{\"path\":\"".$new_file_name."\"}' WHERE customer_id=".$_SESSION['id']."";
+      if (mysqli_query($conn, $sql)) {
+        // echo "Record updated successfully";
+        header("Refresh:0");
+      } else {
+        // echo "Error updating record: " . mysqli_error($conn);
+      }
     }
 ?>
 <!DOCTYPE html>
@@ -140,8 +161,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $customer_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -227,15 +248,6 @@
                     <div class="col-7 align-self-center">
                         <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Your Profile</h4>
                     </div>
-                    <div class="col-5 align-self-center">
-                        <div class="customize-input float-right">
-                            <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
-                                <option selected>Aug 19</option>
-                                <option value="1">July 19</option>
-                                <option value="2">Jun 19</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -251,6 +263,20 @@
                 <!-- basic table -->
                 <div class="row">
                     <div class="col-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4>Profile Image</h4>
+                            <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle mt-3 mb-4'
+                                width='250' height='250'>"; ?>
+                            <form action="./profile.php" method="post" enctype="multipart/form-data">
+                              <input type="file" name="newImage">
+                              <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                              </div>
+                            </form>
+                          </div>
+                      </div>
+                      <hr />
                         <div class="card">
                             <div class="card-body">
                                 <form id="myForm" action="../../database/edit_customer.php" method="post">
