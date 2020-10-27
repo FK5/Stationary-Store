@@ -1,7 +1,6 @@
 <?php
   session_start();
   require_once('../database/db.php');
-
   if(isset($_SESSION['usernameExists'])){
     if($_SESSION['usernameExists']){
       echo "<script type='text/javascript'>alert('Username already Exists');</script>";
@@ -14,7 +13,6 @@
       unset($_SESSION['noData']);
     }
   }
-  
 ?>
 <!DOCTYPE html>
 <html dir="ltr">
@@ -65,7 +63,7 @@
                     <div class="p-3">
                         <img src="../assets/images/big/icon.png" alt="wrapkit">
                         <h2 class="mt-3 text-center">Sign Up for Free</h2>
-                        <form id="reg-form" class="mt-4" method="post" action="../database/register_customer.php">
+                        <form id="reg-form" class="mt-4" method="post" action="../database/register_user.php">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
@@ -98,6 +96,14 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
+                                  <select class="custom-select mr-sm-2" id="role" name="role">
+                                      <option selected>Position</option>
+                                      <option value="1">Admin</option>
+                                      <option value="2">Manager</option>
+                                      <option value="3">Employee</option>
+                                  </select>
+                                </div>
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label id="label"></label>
                                     </div>
@@ -108,9 +114,6 @@
                                 </div>
                                 <div class="col-lg-12 text-center mt-5">
                                     Already have an account? <a href="./authentication-login1.php" class="text-danger">Sign In</a>
-                                </div>
-                                <div class="col-lg-12 text-center mt-2">
-                                    Want to work with us? <a href="./authentication-register-emps.php" class="text-danger">Sign Up</a>
                                 </div>
                             </div>
                         </form>
@@ -142,10 +145,13 @@
           var username = document.getElementById('username');
           var password = document.getElementById('pass');
           var cpassword = document.getElementById('cpass');
+          var position = document.getElementById('role');
           var label = document.getElementById('label');
 
           // console.log(fullname.value);
-
+          if(position.value==="Position"){
+            label.innerHTML= "Please select a position.";
+          }
           if(password.value!==cpass.value){
             label.innerHTML= "Passwords don't match.";
           }
@@ -168,18 +174,10 @@
             label.innerHTML= "Please fill in your full name.";
           }
 
-          if(fullname.value!=="" && phone.value!=="" && email.value!=="" && username.value!=="" && password.value!=="" && cpassword.value!=="" && password.value===cpass.value){
+          if(fullname.value!=="" && phone.value!=="" && email.value!=="" && username.value!=="" && password.value!=="" && cpassword.value!=="" && password.value===cpass.value && position.value!=="Position"){
             // console.log("success");
             document.getElementById("reg-form").submit();
           }
-
-
-
-
-
-
-
-
         }
 
     </script>

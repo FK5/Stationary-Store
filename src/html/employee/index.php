@@ -17,9 +17,9 @@
     }
     $image_path=json_decode($user_info[0]['image_url'], true);
 
-    $sql = "SELECT c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
+    $sql = "SELECT o.order_id,c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
     FROM customer c, customer_order o, product_order po, product p WHERE c.customer_id=o.customer
-    AND o.order_id=po.order_id AND po.product_id=p.product_id";
+    AND o.order_id=po.order_id AND po.product_id=p.product_id ORDER BY `o`.`date_ordered` DESC";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $orders[] = $record;
@@ -256,6 +256,7 @@
                                             <?php
                                             if(isset($orders)){
                                                 for($i=0;$i<count($orders);$i++){
+                                                    $order_id=$orders[$i]['order_id'];
                                                     $customer_name=$orders[$i]['full_name'];
                                                     $email=$orders[$i]['email'];
                                                     $phone=$orders[$i]['phone'];
@@ -267,7 +268,7 @@
                                                     echo"<td>".$customer_name."</td>";
                                                     echo"<td>".$email."</td>";
                                                     echo"<td>".$phone."</td>";
-                                                    echo"<td>".$product_name." : "."$quantity"."</td>";
+                                                    echo"<td><a href='./view_order.php?orderId=".$order_id."'>".$product_name." : "."$quantity"."</a></td>";
                                                     echo"<td>".$date_ordered."</td>";
                                                     echo"<td>".$price."</td>";
                                                     echo "</tr>";

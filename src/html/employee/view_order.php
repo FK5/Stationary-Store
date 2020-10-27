@@ -5,21 +5,26 @@
     if(!isset($_SESSION['id'])){
       header('Location: ../authentication-login1.php');
     }
-    if(isset($_SESSION['role'])){
+
+    if($_SESSION['role']!=3 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
 
-    $sql = "SELECT full_name, image_url FROM customer WHERE customer_id=".$_SESSION['id']."";
+    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
-      $customer_info[] = $record;
+      $user_info[] = $record;
     }
-    $image_path=json_decode($customer_info[0]['image_url'], true);
+    $image_path=json_decode($user_info[0]['image_url'], true);
 
-    $sql = "SELECT * FROM product WHERE flag_service=1";
+    $user_id=$_SESSION['id'];
+
+    $order_id=$_GET['orderId'];
+    $sql = "SELECT p.product_name, p.price as unit_price, po.quantity, po.price FROM product p, product_order po,
+    customer_order co WHERE co.order_id=po.order_id AND po.product_id=p.product_id AND co.order_id=$order_id";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
-      $products[] = $record;
+      $receipt[] = $record;
     }
 ?>
 <!DOCTYPE html>
@@ -140,7 +145,7 @@
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
                                     width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                        class="text-dark"><?php echo $customer_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
+                                        class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
@@ -172,27 +177,21 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <!-- <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="index.php"
-                            aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
-                                class="hide-menu">Dashboard</span></a></li> -->
                     <li class="list-divider"></li>
 
                     <li class="sidebar-item"> <a class="sidebar-link" href="index.php"
-                            aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
-                                class="hide-menu">Products</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="services.php"
-                            aria-expanded="false"><i data-feather="paperclip" class="feather-icon"></i><span
-                                class="hide-menu">Services</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="orders.php"
                             aria-expanded="false"><i data-feather="shopping-cart" class="feather-icon"></i><span
                                 class="hide-menu">Orders</span></a>
                     </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="payment.php"
-                            aria-expanded="false"><i data-feather="dollar-sign" class="feather-icon"></i><span
-                                class="hide-menu">Payment</span></a>
+                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="customers.php"
+                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                class="hide-menu">Customers</span></a>
                     </li>
+                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="products.php"
+                            aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
+                                class="hide-menu">Products</span></a>
+                    </li>
+
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="profile.php"
                         aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
                             class="hide-menu">Profile</span></a>
@@ -216,91 +215,50 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Our Services</h4>
-
-                    </div>
-
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
-                <!-- basic table -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Our Products</h4>
-                                <h6 class="card-subtitle">Here you can choose from our wide variety of products that suits your needs.</h6>
-                                <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Product Name</th>
-                                                <th>Description</th>
-                                                <th>Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                for($i=0;$i<count($products);$i++){
-                                                    $product_id=$products[$i]['product_id'];
-                                                    $image_path=json_decode($products[$i]['image_url'],true);
-                                                    $product_name=$products[$i]['product_name'];
-                                                    $product_description=$products[$i]['description'];
-                                                    $price=$products[$i]['price'];
-                                                    echo "<tr>";
-                                                    echo"<td> <img src='../../assets/images/products/".$image_path['path']."' width='75' height='75'></td>";
-                                                    echo"<td>".$product_name."</td>";
-                                                    echo"<td>".$product_description."</td>";
-                                                    echo"<td>".$price."</td>";
-                                                    echo "</tr>";
-                                                }
-                                            ?>
-                                        </tbody>
-                                        <tfoot>
-                                          <tr>
-                                              <th>Image</th>
-                                              <th>Product Name</th>
-                                              <th>Description</th>
-                                              <th>Quantity</th>
-                                              <th>Price</th>
-                                          </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <?php echo "<th colspan='4' scope='col'>RECEIPT OF ORDER #".$order_id."</th>";?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Product Name</th>
+                                    <th scope="row">Unit Price</th>
+                                    <th scope="row">Qty.</th>
+                                    <th scope="row">Price</th>
+                                </tr>
+                                <?php
+                                $total_amount=0;
+                                  for($i=0;$i<count($receipt);$i++){
+                                    $product_name=$receipt[$i]['product_name'];
+                                    $unit_price=$receipt[$i]['unit_price'];
+                                    $quantity=$receipt[$i]['quantity'];
+                                    $price=$receipt[$i]['price'];
+                                    $total_amount+=$price;
+                                    echo "<tr>";
+                                    echo "<td scope='row'>".$product_name."</td>";
+                                    echo "<td scope='row'>".$unit_price."</td>";
+                                    echo "<td scope='row'>".$quantity."</td>";
+                                    echo "<td scope='row'>".$price."</td>";
+                                    echo "</tr>";
+                                  }
+                                  echo "<tr> <td scope='row'>Total Price: ".$total_amount." </td></tr>"
+                                 ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center text-muted">
+            <!-- <footer class="footer text-center">
                 All Rights Reserved by Adminmart. Designed and Developed by <a
                     href="https://wrappixel.com">WrapPixel</a>.
-            </footer>
+            </footer> -->
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->

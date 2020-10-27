@@ -327,13 +327,10 @@
                                         </div>
                                         <div class="form-actions">
                                             <div class="text-right">
-                                                <button type="button" id="myButton" class="btn btn-secondary" onclick="edit()">Edit</button>
-                                                <button type="submit" id="myButton2" class="btn btn-info">Save</button>
+                                                <button type="submit" id="myButton2" class="btn btn-info">Add Product</button>
                                             </div>
                                         </div>
-
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -387,26 +384,6 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
-    <script>
-    function edit() {
-      if(document.getElementById("pname").disabled==true){
-        document.getElementById("cprice").disabled = false;
-        document.getElementById("price").disabled = false;
-        document.getElementById("description").disabled = false;
-        document.getElementById("pname").disabled = false;
-        document.getElementById("barcode").disabled = false;
-        document.getElementById("quantity").disabled = false;
-      }else{
-        document.getElementById("cprice").disabled = true;
-        document.getElementById("price").disabled = true;
-        document.getElementById("description").disabled = true;
-        document.getElementById("pname").disabled = true;
-        document.getElementById("barcode").disabled = true;
-        document.getElementById("quantity").disabled = true;
-      }
-
-    }
- </script>
 </body>
 
 </html>

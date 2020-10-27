@@ -7,7 +7,18 @@
     // echo $_SESSION['username'];
     // echo "<br>";
     // echo $_SESSION['id'];
-
+    if(isset($_SESSION['userRegister'])){
+      if($_SESSION['userRegister']){
+        echo "<script type='text/javascript'>alert('Register Complete , wait for an admission from an adminstrator');</script>";
+        unset($_SESSION['userRegister']);
+      }
+    }
+    if(isset($_SESSION['customerRegister'])){
+      if($_SESSION['customerRegister']){
+        echo "<script type='text/javascript'>alert('Register Complete, Login to start shopping!');</script>";
+        unset($_SESSION['customerRegister']);
+      }
+    }
     ////////////////////////////////
     /////     USER  LOGIN     /////
     ////////////////////////////////

@@ -33,6 +33,7 @@
     unset($_SESSION['pids']);
     unset($_SESSION['quantities']);
 
+    $_SESSION['purchaseComplete']=true;
     header('Location: ../html/customer/index.php');
 
 

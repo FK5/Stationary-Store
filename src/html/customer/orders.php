@@ -9,17 +9,18 @@
       header('Location: ../error.html');
     }
 
-    $sql = "SELECT full_name FROM customer WHERE customer_id=".$_SESSION['id']."";
+    $sql = "SELECT full_name, image_url FROM customer WHERE customer_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $customer_info[] = $record;
     }
+    $image_path=json_decode($customer_info[0]['image_url'], true);
 
     $customer_id=$_SESSION['id'];
 
-    $sql = "SELECT c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
+    $sql = "SELECT o.order_id, c.full_name,c.email,c.phone,p.product_name,po.quantity,po.price,o.date_ordered
     FROM customer c, customer_order o, product_order po, product p WHERE c.customer_id=o.customer
-    AND o.order_id=po.order_id AND po.product_id=p.product_id AND c.customer_id=$customer_id";
+    AND o.order_id=po.order_id AND po.product_id=p.product_id AND c.customer_id=$customer_id ORDER BY `o`.`date_ordered` DESC";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $orders[] = $record;
@@ -140,8 +141,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img src="../../assets/images/users/profile-pic.jpg" alt="user" class="rounded-circle"
-                                    width="40">
+                                <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $customer_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -261,6 +262,7 @@
                                             <?php
                                             if(isset($orders)){
                                                 for($i=0;$i<count($orders);$i++){
+                                                    $order_id=$orders[$i]['order_id'];
                                                     $customer_name=$orders[$i]['full_name'];
                                                     $email=$orders[$i]['email'];
                                                     $phone=$orders[$i]['phone'];
@@ -272,7 +274,7 @@
                                                     echo"<td>".$customer_name."</td>";
                                                     echo"<td>".$email."</td>";
                                                     echo"<td>".$phone."</td>";
-                                                    echo"<td>".$product_name." : "."$quantity"."</td>";
+                                                    echo"<td><a href='./view_receipt.php?orderId=".$order_id."'>".$product_name." : "."$quantity"."</a></td>";
                                                     echo"<td>".$date_ordered."</td>";
                                                     echo"<td>".$price."</td>";
                                                     echo "</tr>";

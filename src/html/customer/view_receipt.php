@@ -16,10 +16,12 @@
     }
     $image_path=json_decode($customer_info[0]['image_url'], true);
 
-    $sql = "SELECT * FROM product WHERE flag_service=1";
+    $order_id=$_GET['orderId'];
+    $sql = "SELECT p.product_name, p.price as unit_price, po.quantity, po.price FROM product p, product_order po,
+    customer_order co WHERE co.order_id=po.order_id AND po.product_id=p.product_id AND co.order_id=$order_id";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
-      $products[] = $record;
+      $receipt[] = $record;
     }
 ?>
 <!DOCTYPE html>
@@ -216,91 +218,50 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Our Services</h4>
-
-                    </div>
-
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
-                <!-- basic table -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Our Products</h4>
-                                <h6 class="card-subtitle">Here you can choose from our wide variety of products that suits your needs.</h6>
-                                <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Product Name</th>
-                                                <th>Description</th>
-                                                <th>Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                for($i=0;$i<count($products);$i++){
-                                                    $product_id=$products[$i]['product_id'];
-                                                    $image_path=json_decode($products[$i]['image_url'],true);
-                                                    $product_name=$products[$i]['product_name'];
-                                                    $product_description=$products[$i]['description'];
-                                                    $price=$products[$i]['price'];
-                                                    echo "<tr>";
-                                                    echo"<td> <img src='../../assets/images/products/".$image_path['path']."' width='75' height='75'></td>";
-                                                    echo"<td>".$product_name."</td>";
-                                                    echo"<td>".$product_description."</td>";
-                                                    echo"<td>".$price."</td>";
-                                                    echo "</tr>";
-                                                }
-                                            ?>
-                                        </tbody>
-                                        <tfoot>
-                                          <tr>
-                                              <th>Image</th>
-                                              <th>Product Name</th>
-                                              <th>Description</th>
-                                              <th>Quantity</th>
-                                              <th>Price</th>
-                                          </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <?php echo "<th colspan='4' scope='col'>RECEIPT OF ORDER #".$order_id."</th>";?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Product Name</th>
+                                    <th scope="row">Unit Price</th>
+                                    <th scope="row">Qty.</th>
+                                    <th scope="row">Price</th>
+                                </tr>
+                                <?php
+                                $total_amount=0;
+                                  for($i=0;$i<count($receipt);$i++){
+                                    $product_name=$receipt[$i]['product_name'];
+                                    $unit_price=$receipt[$i]['unit_price'];
+                                    $quantity=$receipt[$i]['quantity'];
+                                    $price=$receipt[$i]['price'];
+                                    $total_amount+=$price;
+                                    echo "<tr>";
+                                    echo "<td scope='row'>".$product_name."</td>";
+                                    echo "<td scope='row'>".$unit_price."</td>";
+                                    echo "<td scope='row'>".$quantity."</td>";
+                                    echo "<td scope='row'>".$price."</td>";
+                                    echo "</tr>";
+                                  }
+                                  echo "<tr> <td scope='row'>Total Price: ".$total_amount." </td></tr>"
+                                 ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center text-muted">
+            <!-- <footer class="footer text-center">
                 All Rights Reserved by Adminmart. Designed and Developed by <a
                     href="https://wrappixel.com">WrapPixel</a>.
-            </footer>
+            </footer> -->
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->

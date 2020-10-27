@@ -16,8 +16,10 @@
       $user_info[] = $record;
     }
     $image_path=json_decode($user_info[0]['image_url'], true);
-    //TOTAL PRODUCTS SOLD
-    $sql = "SELECT SUM(quantity) as total FROM product_order";
+    //TOTAL PRODUCTS SOLD THIS WEEK
+    $sql = "SELECT SUM(po.quantity) as total FROM product_order po, customer_order co WHERE po.order_id=co.order_id AND DATE(co.date_ordered)
+    BETWEEN DATE_SUB(DATE(NOW()), INTERVAL (WEEKDAY(NOW()) - 1 + 7) % 7 DAY)
+    AND DATE_ADD(DATE(NOW()), INTERVAL 6 - (WEEKDAY(NOW()) - 7 + 7) % 7 DAY);";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $total_products_sold[] = $record;
@@ -31,17 +33,16 @@
     }
     $total_products_stock=$total_products_stock[0]['total'];
     //TOTAL PURCHASE
-    $sql = "SELECT COUNT(order_id) as total FROM customer_order";
+    $sql = "SELECT COUNT(order_id) as total FROM customer_order WHERE DATE(date_ordered)
+    BETWEEN DATE_SUB(DATE(NOW()), INTERVAL (WEEKDAY(NOW()) - 1 + 7) % 7 DAY)
+    AND DATE_ADD(DATE(NOW()), INTERVAL 6 - (WEEKDAY(NOW()) - 7 + 7) % 7 DAY);";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $total_purchase[] = $record;
     }
     $total_purchase=$total_purchase[0]['total'];
     //total Income
-    $sql = "( SELECT p.product_id, p.image_url, SUM(po.quantity) AS quantity_sold, p.cost_price, p.price FROM product p,
-     product_order po WHERE p.product_id = po.product_id GROUP BY p.product_id ) UNION ( SELECT product_id, image_url,
-     NULL, cost_price, price FROM product WHERE product_id NOT IN( SELECT p.product_id FROM product p, product_order po
-     WHERE p.product_id = po.product_id GROUP BY product_id ) ) ORDER BY `product_id` ASC";
+    $sql = "( SELECT p.product_id, p.image_url, SUM(po.quantity) AS quantity_sold, p.cost_price, p.price FROM product p, product_order po, customer_order co WHERE p.product_id = po.product_id AND po.order_id=co.order_id AND DATE(date_ordered) BETWEEN DATE_SUB(DATE(NOW()), INTERVAL (WEEKDAY(NOW()) - 1 + 7) % 7 DAY) AND DATE_ADD(DATE(NOW()), INTERVAL 6 - (WEEKDAY(NOW()) - 7 + 7) % 7 DAY) GROUP BY p.product_id ) UNION ( SELECT product_id, image_url, NULL, cost_price, price FROM product WHERE product_id NOT IN( SELECT p.product_id FROM product p, product_order po WHERE p.product_id = po.product_id GROUP BY product_id ) ) ORDER BY `product_id` ASC";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $products_income[] = $record;
