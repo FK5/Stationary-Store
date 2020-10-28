@@ -30,7 +30,7 @@
           if ($stmt->num_rows > 0) {
             $stmt->bind_result($id, $password,$role,$access);
             $stmt->fetch();
-            if (strcmp($_POST['password'],$password)==0) {
+            if (password_verify($_POST['password'], $password)) {
               if($access==0){
                 header('Location: error.html');
               }else{

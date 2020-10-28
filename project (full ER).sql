@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Oct 28, 2020 at 01:13 PM
+-- Generation Time: Oct 28, 2020 at 01:18 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.12
 
@@ -374,18 +374,18 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `full_name`, `email`, `phone`, `username`, `password`, `role`, `access`, `image_url`) VALUES
-(1, 'Daisy Abou Jaoude', 'dasiyaboude@gmail.com', '71000000', 'daisy', '123', 1, 1, '{\"path\":\"daisy1603824356.jpg\"}'),
-(2, 'Barack Obamas', 'barackobama@hotmail.com', '71000001', 'obama', '123', 2, 1, '{\"path\":\"obama1603718579.jpg\"}'),
-(3, 'Donald Trump', 'dtrump@gmail.com', '71000002', 'trump', '123', 3, 1, '{\"path\":\"donald-trump.jpg\"}'),
-(4, 'Dimitri Jones', 'djones@gmail.com', '71000004', 'djones', '123', 3, 1, '{\"path\":\"2.jpg\"}'),
-(5, 'Angela Richards', 'arichards@gmail.com', '71000005', 'richards', '123', 3, 0, '{\"path\":\"3.png\"}'),
-(6, 'Matt Murdock', 'MMdock@outlook.com', '71000005', 'matt', '123', 3, 0, '{\"path\":\"3.jpg\"}'),
-(7, 'Alecko Galecki', 'aleckigalecki@gmail.com', '71000006', 'aleck', '123', 3, 0, '{\"path\":\"3.png\"}'),
-(8, 'Sara Fowler', 'sfowler@outlook.com', '71000007', 'sarahf', '123', 3, 0, '{\"path\":\"4.jpg\"}'),
-(9, 'Samir Chang', 'schangz@hotmail.com', '71000008', 'samirc', '123', 3, 0, '{\"path\":\"5.jpg\"}'),
-(10, 'Michelle Yu', 'michelleyu@gmail.com', '71000009', 'michelle', '123', 3, 0, '{\"path\":\"6.jpg\"}'),
-(11, 'Mary Bullocks', 'marybullocks@outlook.com', '71000010', 'maryb', '123', 3, 1, '{\"path\":\"maryb1603723929.jpg\"}'),
-(12, 'Veronica Anderson', 'vanderson@gmail.com', '71000011', 'veronica', '123', 2, 0, '{\"path\":\"8.jpg\"}'),
+(1, 'Daisy Abou Jaoude', 'dasiyaboude@gmail.com', '71000000', 'daisy', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 1, 1, '{\"path\":\"daisy1603824356.jpg\"}'),
+(2, 'Barack Obamas', 'barackobama@hotmail.com', '71000001', 'obama', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 1, '{\"path\":\"obama1603718579.jpg\"}'),
+(3, 'Donald Trump', 'dtrump@gmail.com', '71000002', 'trump', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"donald-trump.jpg\"}'),
+(4, 'Dimitri Jones', 'djones@gmail.com', '71000004', 'djones', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"2.jpg\"}'),
+(5, 'Angela Richards', 'arichards@gmail.com', '71000005', 'richards', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"3.png\"}'),
+(6, 'Matt Murdock', 'MMdock@outlook.com', '71000005', 'matt', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"3.jpg\"}'),
+(7, 'Alecko Galecki', 'aleckigalecki@gmail.com', '71000006', 'aleck', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"3.png\"}'),
+(8, 'Sara Fowler', 'sfowler@outlook.com', '71000007', 'sarahf', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"4.jpg\"}'),
+(9, 'Samir Chang', 'schangz@hotmail.com', '71000008', 'samirc', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"5.jpg\"}'),
+(10, 'Michelle Yu', 'michelleyu@gmail.com', '71000009', 'michelle', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"6.jpg\"}'),
+(11, 'Mary Bullocks', 'marybullocks@outlook.com', '71000010', 'maryb', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"maryb1603723929.jpg\"}'),
+(12, 'Veronica Anderson', 'vanderson@gmail.com', '71000011', 'veronica', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 0, '{\"path\":\"8.jpg\"}'),
 (15, 'test4', '123', '123', 'test4', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 0, ''),
 (16, 'sds', 'dfs', 'dfs', 'teste', '$2y$10$4hLLw1k.r7l.QQTbdytL7OudeeAk.L12tU2XxLnKL4WQfxC4zfTPC', 2, 0, '{\"path\":\"1.jpg\"}');
 
