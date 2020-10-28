@@ -27,11 +27,12 @@ if ($stmt = $conn->prepare('SELECT customer_id, password FROM customer WHERE use
 	  header('Location: ../html/authentication-register1.php');
 	} else {
 		// Insert new account
-        if ($stmt = $conn->prepare('INSERT INTO customer (full_name, email, phone, username, password, access) VALUES (?, ?, ?, ?, ?, ?)')) {
+        if ($stmt = $conn->prepare('INSERT INTO customer (full_name, email, phone, username, password, access, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)')) {
     	// We do not want to expose passwords in our database, so hash the password and use password_verify when a user logs in.
     	$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
       $access=1;
-    	$stmt->bind_param('sssssi', $_POST['full_name'], $_POST['email'], $_POST['phone'], $_POST['username'], $password, $access);
+			$image_path="{\"path\":\"1.jpg\"}";
+    	$stmt->bind_param('sssssis', $_POST['full_name'], $_POST['email'], $_POST['phone'], $_POST['username'], $password, $access, $image_path);
     	$stmt->execute();
 			$_SESSION['customerRegister']=true;
       header('Location: ../html/authentication-login1.php');

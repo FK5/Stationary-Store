@@ -24,11 +24,12 @@ if ($stmt = $conn->prepare('SELECT user_id, password FROM user WHERE username = 
     header('Location: ../html/authentication-register-emps.php');
 	} else {
 		// Insert new account
-        if ($stmt = $conn->prepare('INSERT INTO user (full_name, email, phone, username, password, access, role) VALUES (?, ?, ?, ?, ?, ?, ?)')) {
+        if ($stmt = $conn->prepare('INSERT INTO user (full_name, email, phone, username, password, access, role, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')) {
     	// We do not want to expose passwords in our database, so hash the password and use password_verify when a user logs in.
     	$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
       $access=0;
-    	$stmt->bind_param('sssssii', $_POST['full_name'], $_POST['email'], $_POST['phone'], $_POST['username'], $password, $access, $_POST['role']);
+      $image_path="{\"path\":\"1.jpg\"}";
+    	$stmt->bind_param('sssssiis', $_POST['full_name'], $_POST['email'], $_POST['phone'], $_POST['username'], $password, $access, $_POST['role'], $image_path);
     	$stmt->execute();
       $_SESSION['userRegister']=true;
       header('Location: ../html/authentication-login1.php');
