@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3308
--- Generation Time: Oct 28, 2020 at 01:18 PM
--- Server version: 8.0.18
--- PHP Version: 7.3.12
+-- Host: 127.0.0.1:3306
+-- Generation Time: Oct 30, 2020 at 06:36 PM
+-- Server version: 8.0.21
+-- PHP Version: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -30,10 +29,10 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `bill`;
 CREATE TABLE IF NOT EXISTS `bill` (
-  `bill_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(250) NOT NULL,
-  `total_amount` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
+  `total_amount` int NOT NULL,
+  `customer_id` int NOT NULL,
   PRIMARY KEY (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -45,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `bill` (
 
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `phone` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -74,8 +73,8 @@ INSERT INTO `customer` (`customer_id`, `full_name`, `email`, `phone`, `username`
 
 DROP TABLE IF EXISTS `customer_order`;
 CREATE TABLE IF NOT EXISTS `customer_order` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer` int(11) NOT NULL,
+  `order_id` int NOT NULL AUTO_INCREMENT,
+  `customer` int NOT NULL,
   `date_ordered` date NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `customer` (`customer`)
@@ -105,8 +104,8 @@ INSERT INTO `customer_order` (`order_id`, `customer`, `date_ordered`) VALUES
 
 DROP TABLE IF EXISTS `customer_product`;
 CREATE TABLE IF NOT EXISTS `customer_product` (
-  `customer_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `customer_id` int NOT NULL,
+  `product_id` int NOT NULL,
   PRIMARY KEY (`customer_id`,`product_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -119,13 +118,13 @@ CREATE TABLE IF NOT EXISTS `customer_product` (
 
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE IF NOT EXISTS `employee` (
-  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `phone` varchar(150) NOT NULL,
   `username` varchar(150) NOT NULL,
   `password` varchar(150) NOT NULL,
-  `role` int(11) NOT NULL,
+  `role` int NOT NULL,
   `access` tinyint(1) NOT NULL,
   `image_url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`employee_id`),
@@ -140,8 +139,8 @@ CREATE TABLE IF NOT EXISTS `employee` (
 
 DROP TABLE IF EXISTS `employee_bill`;
 CREATE TABLE IF NOT EXISTS `employee_bill` (
-  `employee_id` int(11) NOT NULL,
-  `bill_id` int(11) NOT NULL,
+  `employee_id` int NOT NULL,
+  `bill_id` int NOT NULL,
   PRIMARY KEY (`employee_id`,`bill_id`),
   KEY `bill_id` (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -154,8 +153,8 @@ CREATE TABLE IF NOT EXISTS `employee_bill` (
 
 DROP TABLE IF EXISTS `employee_order`;
 CREATE TABLE IF NOT EXISTS `employee_order` (
-  `employee_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `employee_id` int NOT NULL,
+  `order_id` int NOT NULL,
   PRIMARY KEY (`employee_id`,`order_id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -168,18 +167,25 @@ CREATE TABLE IF NOT EXISTS `employee_order` (
 
 DROP TABLE IF EXISTS `manager`;
 CREATE TABLE IF NOT EXISTS `manager` (
-  `manager_id` int(11) NOT NULL AUTO_INCREMENT,
+  `manager_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `phone` varchar(150) NOT NULL,
   `username` varchar(150) NOT NULL,
   `password` varchar(150) NOT NULL,
-  `role` int(11) NOT NULL,
+  `role` int NOT NULL,
   `access` tinyint(1) NOT NULL,
   `image_url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`manager_id`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `manager`
+--
+
+INSERT INTO `manager` (`manager_id`, `full_name`, `email`, `phone`, `username`, `password`, `role`, `access`, `image_url`) VALUES
+(17, 'testmanager', '123@adsdas', '123', 'testmanager', '$2y$10$BTc/5iQzj5neMsQNWw3OPu73lelZi6EZ/bjQVty3s9IY.VnB8JVWy', 0, 0, '{\"path\":\"1.jpg\"}');
 
 -- --------------------------------------------------------
 
@@ -189,8 +195,8 @@ CREATE TABLE IF NOT EXISTS `manager` (
 
 DROP TABLE IF EXISTS `manager_bill`;
 CREATE TABLE IF NOT EXISTS `manager_bill` (
-  `manger_id` int(11) NOT NULL,
-  `bill_id` int(11) NOT NULL,
+  `manger_id` int NOT NULL,
+  `bill_id` int NOT NULL,
   PRIMARY KEY (`manger_id`,`bill_id`),
   KEY `bill_id` (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -203,8 +209,8 @@ CREATE TABLE IF NOT EXISTS `manager_bill` (
 
 DROP TABLE IF EXISTS `manager_product`;
 CREATE TABLE IF NOT EXISTS `manager_product` (
-  `manager_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `manager_id` int NOT NULL,
+  `product_id` int NOT NULL,
   PRIMARY KEY (`manager_id`,`product_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -217,8 +223,8 @@ CREATE TABLE IF NOT EXISTS `manager_product` (
 
 DROP TABLE IF EXISTS `manager_report`;
 CREATE TABLE IF NOT EXISTS `manager_report` (
-  `manager_id` int(11) NOT NULL,
-  `report_id` int(11) NOT NULL,
+  `manager_id` int NOT NULL,
+  `report_id` int NOT NULL,
   PRIMARY KEY (`manager_id`,`report_id`),
   KEY `report_id` (`report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -231,17 +237,17 @@ CREATE TABLE IF NOT EXISTS `manager_report` (
 
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
-  `product_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int NOT NULL AUTO_INCREMENT,
   `product_name` varchar(150) NOT NULL,
-  `cost_price` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
+  `cost_price` int NOT NULL,
+  `price` int NOT NULL,
   `description` varchar(250) NOT NULL,
   `barcode` varchar(150) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` int NOT NULL,
   `image_url` varchar(150) NOT NULL,
   `flag_service` tinyint(1) NOT NULL,
   PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `product`
@@ -254,7 +260,9 @@ INSERT INTO `product` (`product_id`, `product_name`, `cost_price`, `price`, `des
 (4, 'A4 papers', 10000, 15000, 'Double A4 papers 500 sheets', 'A-0040-Z', 80, '{\"path\":\"A4 paper.jpg\"}', 0),
 (5, 'Print 1 paper', 100, 500, 'Print any NON COLORED 1 paper', 'A-0050-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1),
 (6, 'Print 5 papers', 500, 2000, 'Print any NON COLORED 5 papers', 'A-0060-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1),
-(7, 'Print 10 papers', 1000, 5000, 'Print any NON COLORED 10 papers', 'A-0070-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1);
+(7, 'Print 10 papers', 1000, 5000, 'Print any NON COLORED 10 papers', 'A-0070-Z', 0, '{\"path\":\"print-A4.jpg\"}', 1),
+(16, 'iwacth', 123, 123, 'fsdfdsf', 'A-0260-Z', 45, '{\"path\":\"iwacth.jpg\"}', 0),
+(17, 'something', 1234, 1234, 'asdasdas', 'A-123-Z', 300, '{\"path\":\"something.jpg\"}', 0);
 
 -- --------------------------------------------------------
 
@@ -264,8 +272,8 @@ INSERT INTO `product` (`product_id`, `product_name`, `cost_price`, `price`, `des
 
 DROP TABLE IF EXISTS `product_bill`;
 CREATE TABLE IF NOT EXISTS `product_bill` (
-  `product_id` int(11) NOT NULL,
-  `bill_id` int(11) NOT NULL,
+  `product_id` int NOT NULL,
+  `bill_id` int NOT NULL,
   PRIMARY KEY (`product_id`,`bill_id`),
   KEY `bill_id` (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -278,10 +286,10 @@ CREATE TABLE IF NOT EXISTS `product_bill` (
 
 DROP TABLE IF EXISTS `product_order`;
 CREATE TABLE IF NOT EXISTS `product_order` (
-  `product_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
+  `product_id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` int NOT NULL,
   PRIMARY KEY (`product_id`,`order_id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -320,7 +328,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `report`;
 CREATE TABLE IF NOT EXISTS `report` (
-  `report_id` int(11) NOT NULL AUTO_INCREMENT,
+  `report_id` int NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `report_url` varchar(250) NOT NULL,
   PRIMARY KEY (`report_id`)
@@ -334,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `report` (
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
-  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(150) NOT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -356,18 +364,18 @@ INSERT INTO `role` (`role_id`, `role_name`) VALUES
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `full_name` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `phone` varchar(150) NOT NULL,
   `username` varchar(150) NOT NULL,
   `password` varchar(150) NOT NULL,
-  `role` int(11) NOT NULL,
+  `role` int NOT NULL,
   `access` tinyint(1) NOT NULL,
   `image_url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`user_id`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
@@ -375,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`user_id`, `full_name`, `email`, `phone`, `username`, `password`, `role`, `access`, `image_url`) VALUES
 (1, 'Daisy Abou Jaoude', 'dasiyaboude@gmail.com', '71000000', 'daisy', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 1, 1, '{\"path\":\"daisy1603824356.jpg\"}'),
-(2, 'Barack Obamas', 'barackobama@hotmail.com', '71000001', 'obama', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 1, '{\"path\":\"obama1603718579.jpg\"}'),
+(2, 'Barack Obama', 'barackobama@hotmail.com', '71000001', 'obama', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 1, '{\"path\":\"obama1603718579.jpg\"}'),
 (3, 'Donald Trump', 'dtrump@gmail.com', '71000002', 'trump', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"donald-trump.jpg\"}'),
 (4, 'Dimitri Jones', 'djones@gmail.com', '71000004', 'djones', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"2.jpg\"}'),
 (5, 'Angela Richards', 'arichards@gmail.com', '71000005', 'richards', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"3.png\"}'),
@@ -386,8 +394,43 @@ INSERT INTO `user` (`user_id`, `full_name`, `email`, `phone`, `username`, `passw
 (10, 'Michelle Yu', 'michelleyu@gmail.com', '71000009', 'michelle', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 0, '{\"path\":\"6.jpg\"}'),
 (11, 'Mary Bullocks', 'marybullocks@outlook.com', '71000010', 'maryb', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 3, 1, '{\"path\":\"maryb1603723929.jpg\"}'),
 (12, 'Veronica Anderson', 'vanderson@gmail.com', '71000011', 'veronica', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 0, '{\"path\":\"8.jpg\"}'),
-(15, 'test4', '123', '123', 'test4', '$2y$10$xmz.9zHdWRExja1Yz056JeLGZ3zuto47LjbftPOCG9L8XdQMK4EGS', 2, 0, ''),
-(16, 'sds', 'dfs', 'dfs', 'teste', '$2y$10$4hLLw1k.r7l.QQTbdytL7OudeeAk.L12tU2XxLnKL4WQfxC4zfTPC', 2, 0, '{\"path\":\"1.jpg\"}');
+(17, 'testmanager', '123@adsdas', '123', 'testmanager', '$2y$10$BTc/5iQzj5neMsQNWw3OPu73lelZi6EZ/bjQVty3s9IY.VnB8JVWy', 2, 0, '{\"path\":\"1.jpg\"}');
+
+--
+-- Triggers `user`
+--
+DROP TRIGGER IF EXISTS `addemployee`;
+DELIMITER $$
+CREATE TRIGGER `addemployee` AFTER INSERT ON `user` FOR EACH ROW IF (NEW.role = 3) THEN
+INSERT INTO employee
+SET
+    manager_id = NEW.user_id,
+    full_name = NEW.full_name,
+    phone = NEW.phone,
+    email = NEW.email,
+    username = NEW.username,
+    `password` = NEW.password,
+    image_url = NEW.image_url,
+    access = NEW.access;
+    END IF
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `addmanager`;
+DELIMITER $$
+CREATE TRIGGER `addmanager` AFTER INSERT ON `user` FOR EACH ROW IF (NEW.role = 2) THEN
+INSERT INTO manager
+SET
+    manager_id = NEW.user_id,
+    full_name = NEW.full_name,
+    phone = NEW.phone,
+    email = NEW.email,
+    username = NEW.username,
+    `password` = NEW.password,
+    image_url = NEW.image_url,
+    access = NEW.access;
+    END IF
+$$
+DELIMITER ;
 
 --
 -- Constraints for dumped tables

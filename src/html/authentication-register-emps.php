@@ -98,7 +98,6 @@
                                 <div class="col-lg-12">
                                   <select class="custom-select mr-sm-2" id="role" name="role">
                                       <option selected>Position</option>
-                                      <option value="1">Admin</option>
                                       <option value="2">Manager</option>
                                       <option value="3">Employee</option>
                                   </select>

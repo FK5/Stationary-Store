@@ -1,0 +1,8 @@
+CREATE EVENT generate_report
+ON SCHEDULE
+  EVERY 168 HOUR STARTS '2020-11-2 23:59:59'
+COMMENT 'Report Generated'
+DO
+CALL store_report();
+
+SET event_scheduler=1;
