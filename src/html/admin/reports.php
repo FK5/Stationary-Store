@@ -71,9 +71,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <!--links for css print and print preview -->
+    <link rel="stylesheet" type="text/css" href="../../css/print.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/Style.css" />
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon.png">
-    <title>Adminmart Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" href="../../assets/images/favicon.ico" />
+    <title>A.F.A Printing Services & More</title>
     <!-- Custom CSS -->
     <link href="../../assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -259,7 +262,7 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
             <div class="col-12">
-                <div class="card">
+                <div id="printarea" class="card">
                     <div class="table-responsive">
                         <table class="table">
                             <thead class="thead-light">
@@ -300,6 +303,10 @@
                         </table>
                     </div>
                 </div>
+                <div class="col-12 mt-4">
+                  <input type="button" value="Print Preview" class="btn btn-primary" onclick="PrintPreview()"/>
+                  <input type="button" value="Print" class="btn btn-primary ml-3" onclick="PrintDoc()"/>
+                </div>
             </div>
             <!-- footer -->
             <!-- ============================================================== -->
@@ -337,6 +344,28 @@
     <script src="../../assets/libs/moment/min/moment.min.js"></script>
     <script src="../../assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="../../dist/js/pages/calendar/cal-init.js"></script>
+    <script type="text/javascript">
+      /*--This JavaScript method for Print command--*/
+          function PrintDoc() {
+              var toPrint = document.getElementById('printarea');
+              var popupWin = window.open('', '_blank', 'width=350,height=150,location=no,left=200px');
+              popupWin.document.open();
+              popupWin.document.write('<html><title>::Preview::</title><link rel="stylesheet" type="text/css" href="print.css" /></head><body onload="window.print()">')
+              popupWin.document.write(toPrint.innerHTML);
+              popupWin.document.write('</html>');
+              popupWin.document.close();
+          }
+      /*--This JavaScript method for Print Preview command--*/
+          function PrintPreview() {
+              var toPrint = document.getElementById('printarea');
+              var popupWin = window.open('', '_blank', 'width=350,height=150,location=no,left=200px');
+              popupWin.document.open();
+              popupWin.document.write('<html><title>::Print Preview::</title><link rel="stylesheet" type="text/css" href="Print.css" media="screen"/></head><body">')
+              popupWin.document.write(toPrint.innerHTML);
+              popupWin.document.write('</html>');
+              popupWin.document.close();
+          }
+      </script>
 </body>
 
 </html>
