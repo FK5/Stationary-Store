@@ -15,7 +15,7 @@
     while($record = mysqli_fetch_assoc($query_result)) {
       $users_info[] = $record;
     }
-    $image_path=json_decode($user_info[0]['image_url'], true);
+    $image_path=json_decode($users_info[0]['image_url'], true);
 ///////TO EDIT  Customer
     $customer_id=$_GET['userId'];
 
@@ -124,9 +124,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -147,7 +145,7 @@
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
-                                    width='40'>"; ?>
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $users_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -194,12 +192,15 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-
                     <li class="list-divider"></li>
 
                     <li class="sidebar-item"> <a class="sidebar-link" href="index.php"
                             aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
-                                class="hide-menu">Users</span></a>
+                                class="hide-menu">Customers</span></a>
+                    </li>
+                    <li class="sidebar-item"> <a class="sidebar-link" href="employees.php"
+                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                class="hide-menu">Employees</span></a>
                     </li>
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="stock.php"
                             aria-expanded="false"><i data-feather="archive" class="feather-icon"></i><span
@@ -213,17 +214,12 @@
                             aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                                 class="hide-menu">Reports</span></a>
                     </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="income.php"
-                        aria-expanded="false"><i data-feather="trending-up" class="feather-icon"></i><span
-                            class="hide-menu">Income</span></a>
-                    </li>
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="profile.php"
                         aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
                             class="hide-menu">Profile</span></a>
                     </li>
 
                         <li class="list-divider"></li>
-
 
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="../logout.php"
                                 aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span

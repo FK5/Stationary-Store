@@ -10,7 +10,7 @@
           header('Location:../html/manager/index.php');
           break;
         case 3:
-          header('Location:../html/employee/index.php');
+          header('Location:../html/employee/customers.php');
           break;
         }
       } else {
@@ -19,7 +19,7 @@
             header('Location:../html/manager/index.php');
             break;
           case 3:
-            header('Location:../html/employee/index.php');
+            header('Location:../html/employee/customers.php');
             break;
       }
     }

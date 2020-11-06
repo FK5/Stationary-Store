@@ -12,7 +12,7 @@
 
     if(isset($_SESSION['purchaseComplete'])){
       if($_SESSION['purchaseComplete']){
-        echo "<script type='text/javascript'>alert('Your purchase was successful!');</script>";
+        echo "<script type='text/javascript'>alert('Your purchase was successful! Please pay in cash the delivery guy. You can revisit your receipt in your orders menu');</script>";
         unset($_SESSION['purchaseComplete']);
       }
     }
@@ -123,9 +123,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -289,7 +287,7 @@
                                                     echo"<td>".$product_description."</td>";
                                                     echo"<td>".$quantity."</td>";
                                                     echo"<td>".$price."</td>";
-                                                    echo"<td><input type='number' placeholder='quantity you want' min='0' name='".$product_id."' /></td>";
+                                                    echo"<td><input type='number' placeholder='Qty.' onkeyup=enforceMinMax(this) min='0' max='".$quantity."' name='".$product_id."' /></td>";
                                                     echo "</tr>";
                                                 }
                                             ?>
@@ -362,9 +360,24 @@
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
     <script>
+    //
+    //   for($i=0;$i<count($products);$i++){
+    //     echo "var ".$products[$i]['product_id']." = document.getElementsByName('".$products[$i]['product_id']."');";
+    //   }
+    //
     function add_to_checkout() {
       var form = document.getElementById("form-quantity");
       form.submit();
+    }
+    function enforceMinMax(el){
+      if(el.value != ""){
+        if(parseInt(el.value) < parseInt(el.min)){
+          el.value = el.min;
+        }
+        if(parseInt(el.value) > parseInt(el.max)){
+          el.value = el.max;
+        }
+      }
     }
  </script>
 </body>

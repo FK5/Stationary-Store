@@ -135,9 +135,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -268,10 +266,10 @@
                             <h4>Profile Image</h4>
                             <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle mt-3 mb-4'
                                 width='250' height='250'>"; ?>
-                            <form action="./profile.php" method="post" enctype="multipart/form-data">
-                              <input type="file" name="newImage">
+                            <form id="im-form" action="./profile.php" method="post" enctype="multipart/form-data">
+                              <input id="image" type="file" name="newImage">
                               <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="button" onclick="imageempty()" class="btn btn-primary">Upload</button>
                               </div>
                             </form>
                           </div>
@@ -385,6 +383,15 @@
         document.getElementById("email").disabled = true;
         document.getElementById("phone").disabled = true;
         document.getElementById("username").disabled = true;
+      }
+    }
+    function imageempty(){
+      var imagefile = document.getElementById('image');
+      if(imagefile.files.length != 0){
+        // console.log("success");
+        document.getElementById("im-form").submit();
+      }else{
+        alert("Please Upload an Image");
       }
     }
  </script>

@@ -12,6 +12,7 @@ if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['full
 // echo $_POST['full_name'];
 // echo $_POST['phone'];
 // echo $_POST['confirm_password'];
+// echo $_POST['role'];
 
 if ($stmt = $conn->prepare('SELECT user_id, password FROM user WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.

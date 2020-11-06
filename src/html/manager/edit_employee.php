@@ -9,19 +9,27 @@
     if($_SESSION['role']!=2 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
+///////managers acc info
+    $sql = "SELECT * FROM user WHERE user_id=".$_SESSION['id']."";
+    $query_result = mysqli_query($conn, $sql);
+    while($record = mysqli_fetch_assoc($query_result)) {
+      $users_info[] = $record;
+    }
+    $image_path=json_decode($users_info[0]['image_url'], true);
+///////TO EDIT  Customer
+    $user_id=$_GET['userId'];
 
-    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
+    $sql = "SELECT * FROM user WHERE user_id=".$user_id."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
       $user_info[] = $record;
     }
-    $image_path=json_decode($user_info[0]['image_url'], true);
 
-    $sql = "SELECT image_url,product_name,quantity FROM product";
-    $query_result = mysqli_query($conn, $sql);
-    while($record = mysqli_fetch_assoc($query_result)) {
-      $stock[] = $record;
-    }
+    $fullname=$user_info[0]['full_name'];
+    $email=$user_info[0]['email'];
+    $phone=$user_info[0]['phone'];
+    $username=$user_info[0]['username'];
+
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -112,9 +120,6 @@
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
-                      <!-- ============================================================== -->
-                      <!-- Search -->
-                      <!-- ============================================================== -->
                       <li class="nav-item d-none d-md-block">
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
@@ -129,7 +134,9 @@
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-right">
-
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
 
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -140,18 +147,31 @@
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
                                     width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                        class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
+                                        class="text-dark"><?php echo $users_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <a class="dropdown-item" href="./profile.php"><i data-feather="user"
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
                                         class="svg-icon mr-2 ml-1"></i>
                                     My Profile</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    My Balance</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    Inbox</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="../logout.php"><i data-feather="power"
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    Account Setting</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
                                         class="svg-icon mr-2 ml-1"></i>
                                     Logout</a>
-
+                                <div class="dropdown-divider"></div>
+                                <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
+                                        Profile</a></div>
+                            </div>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -223,8 +243,9 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Stock Listing</h4>
+                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">User's Profile</h4>
                     </div>
+
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -242,39 +263,47 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
+                                <form id="myForm" action="../../database/edit_employee_for_manager.php?userId=<?php echo $user_id; ?>" method="post">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Full Name</label>
+                                                    <input id="fullname" name="fullname"  type="text" <?php echo "value='".$fullname."'"; ?> class="form-control" placeholder="full name" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input id="email" name="email" type="text" <?php echo "value='".$email."'"; ?> class="form-control" placeholder="email" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Phone</label>
+                                                    <input id="phone" name="phone" type="text" <?php echo "value='".$phone."'"; ?> class="form-control" placeholder="phone" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Username</label>
+                                                    <input id="username" name="username" type="text" <?php echo "value='".$username."'"; ?> class="form-control" placeholder="username" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="text-right">
+                                                <button type="button" id="myButton" class="btn btn-secondary" onclick="edit()">Edit</button>
+                                                <button type="submit" id="myButton2" class="btn btn-info">Save</button>
+                                            </div>
+                                        </div>
 
-                                <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
-                                        <thead>
-                                            <tr>
-                                              <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                              for($i=0;$i<count($stock);$i++){
-                                                  $image_path=json_decode($stock[$i]['image_url'],true);
-                                                  $product_name=$stock[$i]['product_name'];
-                                                  $quantity=$stock[$i]['quantity'];
-                                                  echo "<tr>";
-                                                  echo"<td> <img src='../../assets/images/products/".$image_path['path']."' width='75' height='75'></td>";
-                                                  echo"<td>".$product_name."</td>";
-                                                  echo"<td>".$quantity."</td>";
-                                                  echo "</tr>";
-                                              }
-                                          ?>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                              <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -289,10 +318,10 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center text-muted">
+            <!-- <footer class="footer text-center text-muted">
                 All Rights Reserved by Adminmart. Designed and Developed by <a
                     href="https://wrappixel.com">WrapPixel</a>.
-            </footer>
+            </footer> -->
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -328,6 +357,22 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script>
+    function edit() {
+      if(document.getElementById("fullname").disabled==true){
+        document.getElementById("fullname").disabled = false;
+        document.getElementById("email").disabled = false;
+        document.getElementById("phone").disabled = false;
+        document.getElementById("username").disabled = false;
+      }else{
+        document.getElementById("fullname").disabled = true;
+        document.getElementById("email").disabled = true;
+        document.getElementById("phone").disabled = true;
+        document.getElementById("username").disabled = true;
+      }
+
+    }
+ </script>
 </body>
 
 </html>

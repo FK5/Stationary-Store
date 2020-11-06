@@ -126,9 +126,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -147,7 +145,7 @@
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
-                                    width='40'>"; ?>
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -186,6 +184,10 @@
                     <li class="sidebar-item"> <a class="sidebar-link" href="index.php"
                             aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
                                 class="hide-menu">Customers</span></a>
+                    </li>
+                    <li class="sidebar-item"> <a class="sidebar-link" href="employees.php"
+                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                class="hide-menu">Employees</span></a>
                     </li>
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="stock.php"
                             aria-expanded="false"><i data-feather="archive" class="feather-icon"></i><span
@@ -226,11 +228,26 @@
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Products Listing</h4>
-                    </div>
-                </div>
+              <div class="row">
+                  <div class="col-7 align-self-center">
+                      <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Product Listing</h4>
+                  </div>
+              </div>
+              <div class="row mt-4">
+                <button type="button" class="btn btn-primary btn-circle-lg" onclick="goto_addProduct()"><i class="fa fa-plus"></i>
+                            </button>
+                  <div class="col-7 align-self-center">
+
+                      <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Add Product</h4>
+                      <!-- <div class="d-flex align-items-center">
+                          <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb m-0 p-0">
+                                  <li class="breadcrumb-item"><a href="payment.php" class="text-muted">Goto Payment to proceed to Checkout</a></li>
+                              </ol>
+                          </nav>
+                      </div> -->
+                  </div>
+              </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
@@ -257,11 +274,13 @@
                                                 <th>Quantity in Sale</th>
                                                 <th>Quantity Sold</th>
                                                 <th>Price</th>
+                                                <th>Manage</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                                 for($i=0;$i<count($products);$i++){
+                                                    $product_id=$products[$i]['product_id'];
                                                     $image_path=json_decode($products[$i]['image_url'],true);
                                                     $product_name=$products[$i]['product_name'];
                                                     $quantity=$products[$i]['quantity'];
@@ -276,6 +295,7 @@
                                                     echo"<td>".$quantity."</td>";
                                                     echo"<td>".$quantity_sold."</td>";
                                                     echo"<td>".$price."</td>";
+                                                    echo"<td> <a href='./edit_product.php?productId=".$product_id."'>Edit</a> | <a href='../../database/delete_product.php?productId=".$product_id."'>Delete</a>  </td>";
                                                     echo "</tr>";
                                                 }
                                             ?>
@@ -344,6 +364,11 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script>
+      function goto_addProduct(){
+        window.location.href = './add_product.php';
+      }
+    </script>
 </body>
 
 </html>

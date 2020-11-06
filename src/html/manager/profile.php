@@ -136,9 +136,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -157,7 +155,7 @@
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
-                                    width='40'>"; ?>
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -196,6 +194,10 @@
                     <li class="sidebar-item"> <a class="sidebar-link" href="index.php"
                             aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
                                 class="hide-menu">Customers</span></a>
+                    </li>
+                    <li class="sidebar-item"> <a class="sidebar-link" href="employees.php"
+                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                class="hide-menu">Employees</span></a>
                     </li>
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="stock.php"
                             aria-expanded="false"><i data-feather="archive" class="feather-icon"></i><span
@@ -261,10 +263,10 @@
                             <h4>Profile Image</h4>
                             <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle mt-3 mb-4'
                                 width='250' height='250'>"; ?>
-                            <form action="./profile.php" method="post" enctype="multipart/form-data">
-                              <input type="file" name="newImage">
+                            <form id="im-form" action="./profile.php" method="post" enctype="multipart/form-data">
+                              <input id="image" type="file" name="newImage">
                               <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="button" onclick="imageempty()" class="btn btn-primary">Upload</button>
                               </div>
                             </form>
                           </div>
@@ -380,6 +382,15 @@
         document.getElementById("username").disabled = true;
       }
 
+    }
+    function imageempty(){
+      var imagefile = document.getElementById('image');
+      if(imagefile.files.length != 0){
+        // console.log("success");
+        document.getElementById("im-form").submit();
+      }else{
+        alert("Please Upload an Image");
+      }
     }
  </script>
 </body>

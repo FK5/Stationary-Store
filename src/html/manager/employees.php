@@ -17,10 +17,10 @@
     }
     $image_path=json_decode($user_info[0]['image_url'], true);
 
-    $sql = "SELECT image_url,product_name,quantity FROM product";
+    $sql = "SELECT * FROM user WHERE role=3";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
-      $stock[] = $record;
+      $employees[] = $record;
     }
 ?>
 <!DOCTYPE html>
@@ -151,6 +151,7 @@
                                 <a class="dropdown-item" href="../logout.php"><i data-feather="power"
                                         class="svg-icon mr-2 ml-1"></i>
                                     Logout</a>
+                            </div>
 
                         </li>
                         <!-- ============================================================== -->
@@ -223,7 +224,7 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Stock Listing</h4>
+                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Customer Listing</h4>
                     </div>
                 </div>
             </div>
@@ -242,26 +243,38 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                         <thead>
                                             <tr>
                                               <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
+                                              <th>Full Name</th>
+                                              <th>Email</th>
+                                              <th>Position</th>
+                                              <th>Access</th>
+                                              <th>Manage</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                           <?php
-                                              for($i=0;$i<count($stock);$i++){
-                                                  $image_path=json_decode($stock[$i]['image_url'],true);
-                                                  $product_name=$stock[$i]['product_name'];
-                                                  $quantity=$stock[$i]['quantity'];
+                                              for($i=0;$i<count($employees);$i++){
+                                                  $user_id=$employees[$i]['user_id'];
+                                                  $image_path=json_decode($employees[$i]['image_url'],true);
+                                                  $full_name=$employees[$i]['full_name'];
+                                                  $email=$employees[$i]['email'];
+                                                  $position="Employee";
+                                                  if($employees[$i]['access']==0){
+                                                      $access="Access Denied";
+                                                  }else{
+                                                      $access="Access Permitted";
+                                                  }
                                                   echo "<tr>";
-                                                  echo"<td> <img src='../../assets/images/products/".$image_path['path']."' width='75' height='75'></td>";
-                                                  echo"<td>".$product_name."</td>";
-                                                  echo"<td>".$quantity."</td>";
+                                                  echo"<td> <img src='../../assets/images/users/".$image_path['path']."' width='75' height='75'></td>";
+                                                  echo"<td>".$full_name."</td>";
+                                                  echo"<td>".$email."</td>";
+                                                  echo"<td>".$position."</td>";
+                                                  echo"<td>".$access."<br />  <a href='../../database/user_give_access.php?userId=".$user_id."'>Give</a> | <a href='../../database/user_remove_access.php?userId=".$user_id."'>Deny</a> </td>";
+                                                  echo"<td> <a href='./edit_employee.php?userId=".$user_id."'>Edit</a> | <a href='../../database/delete_user.php?userId=".$user_id."'>Delete</a>  </td>";
                                                   echo "</tr>";
                                               }
                                           ?>
@@ -269,8 +282,11 @@
                                         <tfoot>
                                             <tr>
                                               <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
+                                              <th>Full Name</th>
+                                              <th>Email</th>
+                                              <th>Position</th>
+                                              <th>Access</th>
+                                              <th>Manage</th>
                                             </tr>
                                         </tfoot>
                                     </table>

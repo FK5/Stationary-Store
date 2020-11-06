@@ -172,14 +172,6 @@
             // console.log("success");
             document.getElementById("reg-form").submit();
           }
-
-
-
-
-
-
-
-
         }
 
     </script>

@@ -127,9 +127,7 @@
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
                                   <div class="customize-input">
-                                      <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                                          type="search" placeholder="Search" aria-label="Search">
-                                      <i class="form-control-icon" data-feather="search"></i>
+
                                   </div>
                               </form>
                           </a>
@@ -150,7 +148,7 @@
                             <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
-                                    width='40'>"; ?>
+                                    width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                         class="text-dark"><?php echo $users_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
@@ -197,36 +195,27 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-
                     <li class="list-divider"></li>
 
                     <li class="sidebar-item"> <a class="sidebar-link" href="index.php"
-                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
-                                class="hide-menu">Users</span></a>
+                            aria-expanded="false"><i data-feather="shopping-cart" class="feather-icon"></i><span
+                                class="hide-menu">Orders</span></a>
                     </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="stock.php"
-                            aria-expanded="false"><i data-feather="archive" class="feather-icon"></i><span
-                                class="hide-menu">Stock</span></a>
+                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="customers.php"
+                            aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                class="hide-menu">Customers</span></a>
                     </li>
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="products.php"
                             aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
                                 class="hide-menu">Products</span></a>
                     </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="reports.php"
-                            aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
-                                class="hide-menu">Reports</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="income.php"
-                        aria-expanded="false"><i data-feather="trending-up" class="feather-icon"></i><span
-                            class="hide-menu">Income</span></a>
-                    </li>
+
                     <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="profile.php"
                         aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
                             class="hide-menu">Profile</span></a>
                     </li>
 
                         <li class="list-divider"></li>
-
 
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="../logout.php"
                                 aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
@@ -270,7 +259,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="myForm" action="../../database/add_product.php" method="post" enctype="multipart/form-data">
+                                <form id="prod-form" action="../../database/add_product.php" method="post" enctype="multipart/form-data">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -321,13 +310,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Image</label>
-                                                    <input type="file" name="productImage">
+                                                    <input id="image" type="file" name="productImage">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-actions">
                                             <div class="text-right">
-                                                <button type="submit" id="myButton2" class="btn btn-info">Add Product</button>
+                                                <button type="button" id="myButton2" onclick="addsubmit()" class="btn btn-info">Add Product</button>
                                             </div>
                                         </div>
                                 </form>
@@ -384,6 +373,24 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script>
+      function addsubmit(){
+        var pname = document.getElementById('pname').value;
+        var cprice = document.getElementById('cprice').value;
+        var price = document.getElementById('price').value;
+        var description = document.getElementById('description').value;
+        var barcode = document.getElementById('barcode').value;
+        var imagefile = document.getElementById('image');
+
+        if(pname!=="" && cprice!=="" && price!=="" && description!=="" && barcode!=="" && imagefile.files.length != 0){
+          // console.log("success");
+          document.getElementById("prod-form").submit();
+        }else{
+          alert("form incomplete");
+        }
+
+      }
+    </script>
 </body>
 
 </html>

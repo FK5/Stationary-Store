@@ -9,19 +9,30 @@
     if($_SESSION['role']!=2 || empty($_SESSION['role'])){
       header('Location: ../error.html');
     }
-
-    $sql = "SELECT full_name, image_url FROM user WHERE user_id=".$_SESSION['id']."";
+///////managers acc info
+    $sql = "SELECT * FROM user WHERE user_id=".$_SESSION['id']."";
     $query_result = mysqli_query($conn, $sql);
     while($record = mysqli_fetch_assoc($query_result)) {
-      $user_info[] = $record;
+      $users_info[] = $record;
     }
-    $image_path=json_decode($user_info[0]['image_url'], true);
+    $image_path=json_decode($users_info[0]['image_url'], true);
+///////TO EDIT  Product
+    // $product_id=$_GET['productId'];
+    //
+    // $sql = "SELECT * FROM product WHERE product_id=".$product_id."";
+    // $query_result = mysqli_query($conn, $sql);
+    // while($record = mysqli_fetch_assoc($query_result)) {
+    //   $product_info[] = $record;
+    // }
+    //
+    // $product_name=$product_info[0]['product_name'];
+    // $cost_price=$product_info[0]['cost_price'];
+    // $price=$product_info[0]['price'];
+    // $description=$product_info[0]['description'];
+    // $barcode=$product_info[0]['barcode'];
+    // $quantity=$product_info[0]['quantity'];
 
-    $sql = "SELECT image_url,product_name,quantity FROM product";
-    $query_result = mysqli_query($conn, $sql);
-    while($record = mysqli_fetch_assoc($query_result)) {
-      $stock[] = $record;
-    }
+
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -112,9 +123,6 @@
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
-                      <!-- ============================================================== -->
-                      <!-- Search -->
-                      <!-- ============================================================== -->
                       <li class="nav-item d-none d-md-block">
                           <a class="nav-link" href="javascript:void(0)">
                               <form>
@@ -129,7 +137,9 @@
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav float-right">
-
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
 
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -140,18 +150,31 @@
                                 <?php echo"<img src='../../assets/images/users/".$image_path['path']."' alt='user' class='rounded-circle'
                                     width='40' height='40'>"; ?>
                                 <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                        class="text-dark"><?php echo $user_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
+                                        class="text-dark"><?php echo $users_info[0]['full_name']; ?></span> <i data-feather="chevron-down"
                                         class="svg-icon"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <a class="dropdown-item" href="./profile.php"><i data-feather="user"
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="user"
                                         class="svg-icon mr-2 ml-1"></i>
                                     My Profile</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    My Balance</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    Inbox</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="../logout.php"><i data-feather="power"
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
+                                        class="svg-icon mr-2 ml-1"></i>
+                                    Account Setting</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
                                         class="svg-icon mr-2 ml-1"></i>
                                     Logout</a>
-
+                                <div class="dropdown-divider"></div>
+                                <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
+                                        Profile</a></div>
+                            </div>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -223,8 +246,9 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Stock Listing</h4>
+                        <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Add New Product</h4>
                     </div>
+
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -242,39 +266,67 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
+                                <form id="prod-form" action="../../database/add_product.php" method="post" enctype="multipart/form-data">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Product Name</label>
+                                                    <input id="pname" name="pname"  type="text" class="form-control" placeholder="product name" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Cost Price</label>
+                                                    <input id="cprice" name="cprice" type="text" class="form-control" placeholder="cost price" >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Price</label>
+                                                    <input id="price" name="price" type="text" class="form-control" placeholder="price" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <input id="description" name="description" type="text" class="form-control" placeholder="description" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Barcode</label>
+                                                    <input id="barcode" name="barcode" type="text" class="form-control" placeholder="barcode" >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Quantity</label>
+                                                    <input id="quantity" name="quantity" type="text" class="form-control" placeholder="quantity" >
 
-                                <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
-                                        <thead>
-                                            <tr>
-                                              <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          <?php
-                                              for($i=0;$i<count($stock);$i++){
-                                                  $image_path=json_decode($stock[$i]['image_url'],true);
-                                                  $product_name=$stock[$i]['product_name'];
-                                                  $quantity=$stock[$i]['quantity'];
-                                                  echo "<tr>";
-                                                  echo"<td> <img src='../../assets/images/products/".$image_path['path']."' width='75' height='75'></td>";
-                                                  echo"<td>".$product_name."</td>";
-                                                  echo"<td>".$quantity."</td>";
-                                                  echo "</tr>";
-                                              }
-                                          ?>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                              <th>Image</th>
-                                              <th>Name</th>
-                                              <th>Quantity</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Image</label>
+                                                    <input id="image" type="file" name="productImage">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="text-right">
+                                                <button type="button" id="myButton2" onclick="addsubmit()" class="btn btn-info">Add Product</button>
+                                            </div>
+                                        </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -289,10 +341,10 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center text-muted">
+            <!-- <footer class="footer text-center text-muted">
                 All Rights Reserved by Adminmart. Designed and Developed by <a
                     href="https://wrappixel.com">WrapPixel</a>.
-            </footer>
+            </footer> -->
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -328,6 +380,24 @@
     <!--This page plugins -->
     <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <script>
+      function addsubmit(){
+        var pname = document.getElementById('pname').value;
+        var cprice = document.getElementById('cprice').value;
+        var price = document.getElementById('price').value;
+        var description = document.getElementById('description').value;
+        var barcode = document.getElementById('barcode').value;
+        var imagefile = document.getElementById('image');
+
+        if(pname!=="" && cprice!=="" && price!=="" && description!=="" && barcode!=="" && imagefile.files.length != 0){
+          // console.log("success");
+          document.getElementById("prod-form").submit();
+        }else{
+          alert("form incomplete");
+        }
+
+      }
+    </script>
 </body>
 
 </html>
